@@ -1,12 +1,9 @@
 /**
  * Copyright(C) 2016 Fugle Technology Co. Ltd. All rights reserved.
- *
  */
 package org.reflection.reflection;
 
 import java.lang.reflect.Array;
-
-import com.ifugle.util.UtilException;
 
 /**
  * @since 2016年5月31日 上午9:18:34
@@ -48,7 +45,7 @@ final class ComplexArrayHandler implements FieldHandler {
 			} else if (value instanceof Short) {
 				Array.setShort(arr, index, (short) value);
 			} else {
-				throw new UtilException("this array component type is primitive, but try to set non-primitive value: [{}]", value);
+				throw new RuntimeException("this array component type is primitive, but try to set non-primitive value: " + value);
 			}
 		} else {
 			Array.set(arr, index, value);

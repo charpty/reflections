@@ -1,13 +1,10 @@
 /**
  * Copyright(C) 2016 Fugle Technology Co. Ltd. All rights reserved.
- *
  */
 package org.reflection.reflection;
 
 import java.util.Collection;
 import java.util.List;
-
-import com.ifugle.util.UtilException;
 
 /**
  * @since 2016年5月31日 上午9:17:58
@@ -39,7 +36,7 @@ final class ComplexCollectionHandler implements FieldHandler {
 			List<Object> tmp = (List<Object>) collection;
 			tmp.set(getIndex(), value);
 		} else {
-			throw new UtilException("unsupport complex type [{}]", collection.getClass());
+			throw new RuntimeException("unsupport complex type: " + collection.getClass());
 		}
 	}
 

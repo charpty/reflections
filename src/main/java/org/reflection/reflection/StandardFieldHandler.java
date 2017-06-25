@@ -1,18 +1,14 @@
 /**
  * Copyright(C) 2016 Fugle Technology Co. Ltd. All rights reserved.
- *
  */
 package org.reflection.reflection;
 
 import java.lang.reflect.Field;
 
-import com.ifugle.util.UtilException;
-
 /**
- * @since 2016年5月31日 上午9:16:33
- * @version $Id: StandardFieldHandler.java 15573 2016-05-31 03:10:25Z CaiBo $
  * @author CaiBo
- *
+ * @version $Id: StandardFieldHandler.java 15573 2016-05-31 03:10:25Z CaiBo $
+ * @since 2016年5月31日 上午9:16:33
  */
 final class StandardFieldHandler implements FieldHandler {
 
@@ -37,10 +33,18 @@ final class StandardFieldHandler implements FieldHandler {
 			try {
 				currentField.set(currentHost, value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new UtilException("Can not set value [{}] with field [{}] on instance [{}] ", value, currentField, currentHost, e);
+				StringBuilder sb = new StringBuilder(64);
+				sb.append("Can not set value [").append(value);
+				sb.append("] with field [").append(currentField);
+				sb.append("] on instance [").append(currentHost);
+				sb.append(']');
+				throw new RuntimeException(sb.toString(), e);
 			}
 		} else {
-			throw new UtilException("Can not set the root Object [{}], current field is null", currentHost);
+			StringBuilder sb = new StringBuilder(64);
+			sb.append("Can not set the root Object [").append(currentHost);
+			sb.append("], current field is null");
+			throw new RuntimeException(sb.toString());
 		}
 	}
 }
