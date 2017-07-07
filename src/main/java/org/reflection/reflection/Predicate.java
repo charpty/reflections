@@ -1,6 +1,5 @@
 /**
  * Copyright(C) 2016 Fugle Technology Co. Ltd. All rights reserved.
- *
  */
 package org.reflection.reflection;
 
@@ -10,17 +9,12 @@ package org.reflection.reflection;
  * @author CaiBo
  *
  */
-public interface Predicate {
-	int ACTION_DO_WITH = 0;
-	int ACTION_GO_NEXT = 1;
-	int ACTION_IGNORE = 2;
+@FunctionalInterface
+public interface Predicate<Self extends Object, Context extends ScanContext, Ac extends Action> {
 
 	/**
 	 * @param self
 	 * @param context
-	 * @return {@link ACTION_DO_WITH}<br>
-	 *         {@link ACTION_GO_NEXT}<br>
-	 *         {@link ACTION_IGNORE}
 	 */
-	int apply(Object self, ScanContext context);
+	Ac apply(Self self, Context context);
 }

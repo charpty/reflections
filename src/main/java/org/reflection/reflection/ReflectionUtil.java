@@ -31,11 +31,11 @@ public final class ReflectionUtil {
 	private static final String COMPLEX_ALL = "[@]";
 	private static final Predicate DEFAULT_PREDICATE = new Predicate() {
 		@Override
-		public int apply(Object self, ScanContext context) {
+		public Action apply(Object self, ScanContext context) {
 			if (isSimpleType(self)) {
-				return ACTION_DO_WITH;
+				return Action.ACTION_DO_WITH;
 			}
-			return ACTION_GO_NEXT;
+			return Action.ACTION_GO_NEXT;
 		}
 	};
 
@@ -147,15 +147,15 @@ public final class ReflectionUtil {
 
 	private static void doWith(StandardScanContext context, Object bean, Callback callback, Predicate... predicates) {
 		context.setCurrentBean(bean);
-		int c = filter(context, bean, predicates);
-		if (c == Predicate.ACTION_DO_WITH) {
+		Action c = filter(context, bean, predicates);
+		if (c == Action.ACTION_DO_WITH) {
 			if (callback != null) {
 				context.setCurrentBeanValue(callback);
 			} else {
 				context.savePendingBean();
 			}
 			context.saveCurrentField();
-		} else if (c == Predicate.ACTION_GO_NEXT) {
+		} else if (c == Action.ACTION_GO_NEXT) {
 			doWith0(context, bean, callback, predicates);
 		}
 	}
@@ -254,17 +254,17 @@ public final class ReflectionUtil {
 		context.setComplexHost(false);
 	}
 
-	private static <T> int filter(final StandardScanContext context, final T element, Predicate... predicates) {
+	private static <T> Action filter(final StandardScanContext context, final T element, Predicate... predicates) {
 		assertNotNull(predicates, "predicates");
 		for (Predicate c : predicates) {
 			assertNotNull(c, "predicate");
-			int apply = c.apply(element, context);
-			if (apply != Predicate.ACTION_DO_WITH) {
+			Action apply = c.apply(element, context);
+			if (apply != Action.ACTION_DO_WITH) {
 				return apply;
 			}
 		}
 		context.setFound(true);
-		return Predicate.ACTION_DO_WITH;
+		return Action.ACTION_DO_WITH;
 	}
 
 	private static void assertNotNull(final Object argument, final String name) {
